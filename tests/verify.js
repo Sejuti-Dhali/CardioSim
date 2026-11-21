@@ -1,1 +1,24 @@
-'use strict';const fs=require('node:fs'),assert=require('node:assert/strict'),html=fs.readFileSync('index.html','utf8'),js=fs.readFileSync('assets/app.js','utf8');for(const id of ['approach','architecture','lab','evidence','hr','sv','edv','pressure','pvloop','reset'])assert.ok(html.includes(`id="${id}"`),`Missing ${id}`);for(let p=36;p<=48;p++)assert.ok(fs.existsSync(`assets/report/page-${p}.webp`),`Missing evidence page ${p}`);assert.ok(js.includes('hr*sv/1000'));assert.ok(Math.abs(70*70/1000-4.9)<1e-9);assert.match(html,/Not for medical diagnosis/);console.log('PASS: CardioSim site, all 13 evidence pages, calculator and source limitations');
+"use strict";
+const fs=require("node:fs");
+const assert=require("node:assert/strict");
+const path=require("node:path");
+const root=path.resolve(__dirname,"..");
+const html=fs.readFileSync(path.join(root,"index.html"),"utf8");
+const js=fs.readFileSync(path.join(root,"assets/app.js"),"utf8");
+for(const id of [
+ "architecture","simulation","results","network","wires","nodes",
+ "chartPressure","chartArtery","chartVolume","chartFlow","chartPV",
+ "hr","contract","resist","blood","speed","run","reset"
+]){
+ assert.ok(html.includes(`id="${id}"`),"Missing: "+id);
+}
+assert.match(js,/function simulate\(\)/);
+assert.match(js,/function derivative\(/);
+assert.match(js,/function pressures\(/);
+assert.match(js,/function flows\(/);
+assert.match(js,/maxDrift/);
+assert.match(js,/requestAnimationFrame/);
+assert.ok(!html.includes("assets/report/page-"),"Report screenshot in website");
+assert.ok(!html.includes("reference-gallery"),"Old gallery remains");
+assert.ok(fs.existsSync(path.join(root,"assets/style.css")));
+console.log("PASS: Dynamic cardiac network, numerical engine, results, no PDF gallery");

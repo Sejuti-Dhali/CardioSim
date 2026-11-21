@@ -1,272 +1,161 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="CardioSim: an evidence-grounded exploration of cardiovascular Simulink modeling, heart chambers, pressure and circulation."><title>CardioSim — Modeling the Rhythm of Circulation</title><link rel="stylesheet" href="assets/style.css"><script defer src="assets/app.js"></script><link rel="stylesheet" href="assets/interactive-lab.css"><script defer src="assets/interactive-lab.js"></script></head><body>
-<header class="header"><a class="logo" href="#home"><span class="logomark">♥</span> CARDIO<span>SIM</span></a><nav aria-label="Sections"><a href="#approach">Approach</a><a href="#architecture">Architecture</a><a href="#lab">Interactive Lab</a><a href="#results">Live Results</a><a href="#evidence">References</a></nav><a class="gh" href="https://github.com/Sejuti-Dhali/CardioSim" target="_blank" rel="noopener">GitHub ↗</a></header>
-<main><section class="hero" id="home"><div><div class="overline">● BIOMEDICAL MODELING · SIMULINK RESEARCH CASE</div><h1>Modeling the<br><em>rhythm</em> of<br>circulation.</h1><p>From cardiac chambers and vascular networks to pressure–volume relationships: an interactive interpretation of a documented cardiovascular system simulation.</p><div class="actions"><a class="btn" href="#lab">Explore the model ↗</a><a class="btn secondary" href="#evidence">View report evidence</a></div><div class="herofoot">Educational simulation · Original report figures retained · Not for medical diagnosis</div></div><div class="heroart"><svg viewBox="0 0 520 550" role="img" aria-label="Stylized heart and cardiac pulse"><defs><radialGradient id="glow"><stop stop-color="#ee8793" stop-opacity=".6"/><stop offset="1" stop-color="#ee8793" stop-opacity="0"/></radialGradient></defs><circle cx="260" cy="270" r="243" fill="url(#glow)"/><g stroke="#8ab6c2" stroke-width="1" opacity=".4" fill="none"><circle cx="260" cy="270" r="210" stroke-dasharray="4 12"/><ellipse cx="260" cy="270" rx="150" ry="210" transform="rotate(35 260 270)"/><ellipse cx="260" cy="270" rx="205" ry="137" transform="rotate(35 260 270)"/></g><path d="M260 421C145 341 106 266 130 205c20-61 92-64 130-12 38-52 110-49 130 12 24 61-15 136-130 216Z" fill="#ca576c" stroke="#f4a1a8" stroke-width="4"/><path d="M260 386C174 320 142 268 154 220c13-43 73-43 106 5 33-48 93-48 106-5 12 48-20 100-106 166Z" fill="#ec8894" opacity=".55"/><path d="M8 290H115L145 290 171 257 194 337 237 179 285 370 313 280 337 290H512" stroke="#fff5ea" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="artlabel">CARDIAC CYCLE / 01</div><div class="artlabel bottom">FOUR CHAMBERS · TWO CIRCUITS</div></div></section>
-<div class="stats"><div><small>ORIGINAL SOURCE</small><b>52</b><span>report pages</span></div><div><small>ARCHITECTURE</small><b>4</b><span>cardiac chambers</span></div><div><small>CIRCULATION</small><b>2</b><span>interconnected loops</span></div><div><small>MODEL CLASS</small><b>0D</b><span>lumped-parameter</span></div></div>
-<section class="section" id="approach"><aside>01 / SCIENTIFIC CONTEXT</aside><div><h2>The human heart,<br><em>expressed mathematically.</em></h2><p>The source report documents a cardiovascular model in MATLAB/Simulink that combines chamber dynamics, cardiac valves, pulmonary circulation and systemic circulation. The model uses pressure, flow and volume relations to represent coupled cardiovascular behavior.</p><p>Cardiovascular resistance, compliance, inertance and chamber elastance supply the conceptual basis for its subsystem architecture. This site separates the source project's reported simulation outputs from its own illustrative learning module.</p><div class="note"><b>Model boundary.</b> The original native Simulink model (.slx) and complete machine-readable parameters were not provided. Consequently, the interactive calculation below must not be described as a numerical reproduction of the full reported model.</div></div></section>
-<section class="section sectiondark" id="architecture"><aside>02 / SYSTEM MAP</aside><div><h2>Two circulations.<br><em>One continuous system.</em></h2><p>A schematic route through the left and right cardiac subsystems shows how blood flow connects the pulmonary and systemic pathways.</p><div class="network-workspace">
-  <div class="network-toolbar">
-    <div>
-      <span class="network-live">● INTERACTIVE FLOW NETWORK</span>
-      <p>Drag chambers to rearrange the diagram. Drag pink connection handles to reshape pathways. Select a connection to inspect it.</p>
-    </div>
-    <div class="network-actions">
-      <button type="button" id="networkReset">Reset layout</button>
-    </div>
-  </div>
-
-  <div class="network-stage">
-    <svg id="netCanvas" viewBox="0 0 880 520"
-         role="img"
-         aria-label="Interactive cardiovascular circulation diagram with draggable chambers and editable flow connections">
-      <defs>
-        <marker id="flowArrow" markerWidth="9" markerHeight="9"
-                refX="7" refY="4.5" orient="auto"
-                markerUnits="userSpaceOnUse">
-          <path d="M1 1L8 4.5L1 8Z" fill="#f1a0ab"/>
-        </marker>
-      </defs>
-      <g id="networkEdges"></g>
-      <g id="networkNodes"></g>
-    </svg>
-  </div>
-
-  <div class="network-bottom">
-    <div class="network-inspector">
-      <span>SELECTED CONNECTION</span>
-      <h3 id="connectionTitle">Explore the circulation</h3>
-      <p id="connectionText">Select any animated connection or drag a pink handle to examine the blood-flow pathway.</p>
-    </div>
-    <div class="network-inspector network-state">
-      <span>ILLUSTRATIVE CARDIAC OUTPUT</span>
-      <strong id="networkOutput">4.90 L/min</strong>
-      <p>Animated direction follows the modeled circulation. Animation speed responds to the heart-rate control.</p>
-    </div>
-  </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#091724">
+<meta name="description" content="Interactive cardiovascular hemodynamics simulation with draggable compartment network and dynamically computed pressure, volume and flow results.">
+<title>CardioSim — Interactive Hemodynamics Laboratory</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/app.js" defer></script>
+</head>
+<body>
+<header class="header">
+<a class="brand" href="#top"><span>♥</span> CARDIO<span>SIM</span></a>
+<nav>
+<a href="#architecture">Architecture</a>
+<a href="#simulation">Simulation</a>
+<a href="#results">Live Results</a>
+<a href="#method">Methodology</a>
+</nav>
+<a class="github" href="https://github.com/Sejuti-Dhali/CardioSim" target="_blank" rel="noopener">GitHub ↗</a>
+</header>
+<main>
+<section id="top" class="hero">
+<div class="eyebrow">COMPUTATIONAL CARDIOVASCULAR PHYSIOLOGY / INTERACTIVE SYSTEM</div>
+<h1>Inside the <em>rhythm</em><br>of circulation.</h1>
+<p>Explore a closed-loop cardiovascular simulation. Rearrange the compartments, manipulate flow connections, adjust physiological parameters and examine numerically computed hemodynamic responses.</p>
+<div class="hero-actions">
+<a class="primary" href="#architecture">Explore the Network ↗</a>
+<a class="outline" href="#results">Inspect Live Results</a>
 </div>
-<div class="modules"><article><div class="tag">COMPONENT 01</div><h3>Chambers & valves</h3><p>Four cardiac chambers and four modeled one-way valves determine filling and ejection pathways.</p></article><article><div class="tag">COMPONENT 02</div><h3>Vascular compartments</h3><p>Systemic and pulmonary vessel properties link pressure differences with compartmental flows.</p></article><article><div class="tag">COMPONENT 03</div><h3>Physiological dynamics</h3><p>Cardiac activation and pressure–volume relationships characterize cyclic behavior.</p></article></div></div></section>
-<section class="section sectionlab" id="lab"><aside>03 / INTERACTIVE LAB</aside><div><h2>Change a parameter.<br><em>Observe a relationship.</em></h2><p>The controls below visualize cardiac output and an idealized ventricular pressure–volume cycle. They are an independent educational example, not a new execution of the original Simulink project.</p><div class="laboratory"><div class="controls"><h3>Example inputs</h3><label for="hr">Heart rate <output id="hrValue">70 bpm</output></label><input id="hr" type="range" min="40" max="140" value="70"><label for="sv">Stroke volume <output id="svValue">70 mL</output></label><input id="sv" type="range" min="35" max="110" value="70"><label for="edv">End-diastolic volume <output id="edvValue">120 mL</output></label><input id="edv" type="range" min="90" max="190" value="120"><label for="pressure">Illustrative peak pressure <output id="pressureValue">120 mmHg</output></label><input id="pressure" type="range" min="85" max="180" value="120"><button id="reset">↺ Reset example</button><p class="fineprint">For education only. Values are not patient measurements, a physiological diagnostic model or a full multi-compartment numerical solution.</p></div><div class="instrument"><div class="screenhead"><span>● INTERACTIVE / SCHEMATIC</span><span>NOT CLINICAL DATA</span></div><div class="readouts"><div><small>CARDIAC OUTPUT</small><strong id="output">4.90 L/min</strong></div><div><small>CYCLE DURATION</small><strong id="period">0.86 s</strong></div><div><small>END-SYSTOLIC VOLUME</small><strong id="esv">50 mL</strong></div></div><h3>Left ventricular pressure–volume loop</h3><svg id="plot" viewBox="0 0 680 360" role="img" aria-label="Schematic pressure volume loop"><g stroke="#486174" fill="none" stroke-width="1"><path d="M65 24V306H650"/><path d="M65 94H650M65 164H650M65 234H650" stroke-dasharray="3 8"/></g><text x="15" y="25" fill="#9cafbd" font-size="14">P</text><text x="635" y="337" fill="#9cafbd" font-size="14">V</text><path id="pvloop" fill="#e68c9a29" stroke="#ffb2b6" stroke-width="4"/><circle id="startPoint" r="6" fill="#fbe2ce"/></svg><p class="fineprint">Simplified cycle geometry; cardiac output = heart rate × stroke volume. End-systolic volume = end-diastolic volume − stroke volume.</p></div></div></div></section>
+<div class="status"><i></i> INTERACTIVE 0D COMPARTMENT MODEL <span>· Educational research application</span></div>
+</section>
+
+<section class="summary">
+<div><small>HEART CHAMBERS</small><b>04</b><span>RA · RV · LA · LV</span></div>
+<div><small>VASCULAR COMPARTMENTS</small><b>04</b><span>Systemic and pulmonary</span></div>
+<div><small>FLOW CONNECTIONS</small><b>08</b><span>Four valves and four vascular paths</span></div>
+<div><small>NUMERICAL ENGINE</small><b>ODE</b><span>Volume-conserving time integration</span></div>
+</section>
+
+<section class="section" id="architecture">
+<div class="section-index">01 / INTERACTIVE ARCHITECTURE</div>
+<div class="section-main">
+<h2>The complete<br><em>circulatory network.</em></h2>
+<p>The chambers, valves and vascular compartments form a continuous closed-loop system. Each connection represents a pressure-driven blood-flow pathway. Drag nodes to reposition them; drag connection handles to reshape the diagram; select any component to inspect its role and current model values.</p>
+
+<div class="network-shell">
+<div class="network-top">
+<div><strong><i></i> LIVE SYSTEM MAP</strong><small>CHAMBERS · VALVES · VESSELS</small></div>
+<div class="network-tools">
+<button id="layoutReset" type="button">↺ Reset Layout</button>
+</div>
+</div>
+<div class="network-area">
+<svg id="network" viewBox="0 0 1100 640" role="img" aria-label="Draggable cardiovascular compartment diagram">
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#efa0af"/></marker>
+</defs>
+<g id="wires"></g>
+<g id="nodes"></g>
+</svg>
+</div>
+<div class="inspector">
+<div><small>SELECTED SYSTEM ELEMENT</small><h3 id="inspectName">Cardiovascular network</h3><p id="inspectDescription">Select a chamber, vessel or connection to examine its function.</p></div>
+<div><small>INSTANTANEOUS VALUE</small><strong id="inspectValue">8 compartments</strong><p id="inspectUnit">Closed-loop simulation</p></div>
+</div>
+</div>
+<div class="legend">
+<span><i class="dot-pink"></i>Cardiac chambers</span>
+<span><i class="dot-blue"></i>Vascular compartments</span>
+<span><i class="dot-gold"></i>Flow connections</span>
+</div>
+</div>
+</section>
+
+<section class="section simulation-section" id="simulation">
+<div class="section-index">02 / SIMULATION CONTROL</div>
+<div class="section-main">
+<h2>Control the model.<br><em>Examine the response.</em></h2>
+<p>Changes trigger a new numerical simulation of compartmental blood volume, pressure and inter-compartment flow. The model uses conservation of volume, time-varying ventricular elastance, vascular compliance and pressure-dependent one-way valves.</p>
+<div class="workspace">
+<div class="control-panel">
+<div class="panel-title">MODEL PARAMETERS <span>01–05</span></div>
+<label>Heart rate <output id="hrOut">72 bpm</output></label>
+<input id="hr" type="range" min="45" max="130" value="72">
+<label>LV contractility <output id="contractOut">100%</output></label>
+<input id="contract" type="range" min="55" max="150" value="100">
+<label>Systemic vascular resistance <output id="resistOut">100%</output></label>
+<input id="resist" type="range" min="60" max="180" value="100">
+<label>Circulating blood volume <output id="bloodOut">100%</output></label>
+<input id="blood" type="range" min="85" max="115" value="100">
+<label>Visualization speed <output id="speedOut">1.0×</output></label>
+<input id="speed" type="range" min="25" max="250" value="100">
+<div class="control-buttons">
+<button id="run" type="button">Ⅱ Pause</button>
+<button id="reset" type="button">↺ Reset</button>
+</div>
+<div class="presets">
+<button data-preset="rest" type="button">Rest</button>
+<button data-preset="exercise" type="button">Exercise</button>
+<button data-preset="resistance" type="button">High resistance</button>
+</div>
+<p class="muted small">Parameter changes rerun the numerical calculation. Values are hypothetical, not patient observations.</p>
+</div>
+<div class="monitor">
+<div class="monitor-header"><span><i></i> HEMODYNAMIC MONITOR</span><span>SIMULATED / NOT CLINICAL DATA</span></div>
+<div class="monitor-metrics">
+<div><small>MODEL HEART RATE</small><b id="metricHR">72 <em>bpm</em></b></div>
+<div><small>AVERAGE CARDIAC OUTPUT</small><b id="metricCO">— <em>L/min</em></b></div>
+<div><small>AVERAGE AORTIC PRESSURE</small><b id="metricMAP">— <em>mmHg</em></b></div>
+<div><small>STROKE VOLUME</small><b id="metricSV">— <em>mL</em></b></div>
+</div>
+<svg id="liveECG" viewBox="0 0 820 180" role="img" aria-label="Animated illustrative cardiac rhythm"></svg>
+<div class="monitor-footer"><span>● Simulated cycle phase</span><span id="phaseText">0%</span></div>
+<div class="integrity">
+<div><small>TOTAL VOLUME DRIFT</small><b id="massError">—</b></div>
+<div><small>MODEL STATUS</small><b id="modelStatus">Initializing</b></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
 <section class="section results-section" id="results">
-  <aside>04 / DYNAMIC RESULTS</aside>
-  <div>
-    <div class="results-intro">
-      <div>
-        <h2>Observe the<br><em>hemodynamics.</em></h2>
-        <p>These charts are generated interactively from simplified physiological relationships. They respond to the controls in the Interactive Lab above and are not claimed as reproduced Simulink outputs.</p>
-      </div>
-      <div class="results-status">
-        <span>MODEL STATE</span>
-        <strong id="resultsState">70 BPM</strong>
-        <small>Illustrative waveform synthesis</small>
-      </div>
-    </div>
-
-    <div class="results-grid">
-      <article class="result-panel">
-        <div class="panel-heading">
-          <div><span>01 / PRESSURE</span><h3>Left ventricular pressure</h3></div>
-          <b>mmHg</b>
-        </div>
-        <svg id="pressureChart" viewBox="0 0 640 240"
-             role="img" aria-label="Interactive ventricular pressure versus normalized cardiac cycle"></svg>
-        <p>Illustrative pressure variation across one normalized cardiac cycle.</p>
-      </article>
-
-      <article class="result-panel">
-        <div class="panel-heading">
-          <div><span>02 / VOLUME</span><h3>Left ventricular volume</h3></div>
-          <b>mL</b>
-        </div>
-        <svg id="volumeChart" viewBox="0 0 640 240"
-             role="img" aria-label="Interactive ventricular volume versus normalized cardiac cycle"></svg>
-        <p>End-diastolic volume and stroke volume determine the illustrative volume range.</p>
-      </article>
-
-      <article class="result-panel">
-        <div class="panel-heading">
-          <div><span>03 / FLOW</span><h3>Relative ejection flow</h3></div>
-          <b>Relative</b>
-        </div>
-        <svg id="flowChart" viewBox="0 0 640 240"
-             role="img" aria-label="Interactive normalized ejection flow over the cardiac cycle"></svg>
-        <p>Flow shape is normalized and illustrative; it is not a directly calculated vascular flow rate.</p>
-      </article>
-
-      <article class="result-panel metrics-panel">
-        <div class="panel-heading">
-          <div><span>04 / DERIVED QUANTITIES</span><h3>Cardiac performance</h3></div>
-          <b>What-if model</b>
-        </div>
-        <div class="metric-stack">
-          <div><span>Cardiac output</span><strong id="resultCO">4.90 L/min</strong></div>
-          <div><span>Stroke volume</span><strong id="resultSV">70 mL</strong></div>
-          <div><span>Ejection fraction</span><strong id="resultEF">58.3%</strong></div>
-          <div><span>Cycle duration</span><strong id="resultCycle">0.86 s</strong></div>
-        </div>
-      </article>
-    </div>
-
-    <p class="result-caution">Methodological boundary: these plots are independently generated educational examples. They are not digitized patient measurements, original Simulink model executions or validated clinical predictions.</p>
-  </div>
+<div class="section-index">03 / DYNAMIC RESULTS</div>
+<div class="section-main">
+<div class="results-heading">
+<div><h2>Hemodynamics,<br><em>computed live.</em></h2><p>Each graph is regenerated from the numerical state trajectory after a parameter change. Move the cursor over any graph to inspect its calculated values at a specific time.</p></div>
+<div class="result-indicator"><small>NUMERICAL ENGINE</small><strong>Closed-loop ODE</strong><span id="sampleCount">Simulation samples</span></div>
+</div>
+<div class="graph-grid">
+<article class="graph-card"><header><div><small>01 / CARDIAC PRESSURE</small><h3>Left & right ventricular pressure</h3></div><b>mmHg</b></header><svg id="chartPressure" viewBox="0 0 700 290" role="img" aria-label="Calculated left and right ventricular pressure time series"></svg><div class="keys"><span class="pink">● Left ventricle</span><span class="blue">● Right ventricle</span></div></article>
+<article class="graph-card"><header><div><small>02 / VASCULAR PRESSURE</small><h3>Systemic & pulmonary arteries</h3></div><b>mmHg</b></header><svg id="chartArtery" viewBox="0 0 700 290" role="img" aria-label="Calculated systemic and pulmonary artery pressure time series"></svg><div class="keys"><span class="pink">● Systemic</span><span class="blue">● Pulmonary</span></div></article>
+<article class="graph-card"><header><div><small>03 / VENTRICULAR VOLUME</small><h3>Left & right ventricular volume</h3></div><b>mL</b></header><svg id="chartVolume" viewBox="0 0 700 290" role="img" aria-label="Calculated left and right ventricular volume time series"></svg><div class="keys"><span class="pink">● Left ventricle</span><span class="blue">● Right ventricle</span></div></article>
+<article class="graph-card"><header><div><small>04 / OUTFLOW</small><h3>Aortic & pulmonary valve flow</h3></div><b>mL/s</b></header><svg id="chartFlow" viewBox="0 0 700 290" role="img" aria-label="Calculated valve flow time series"></svg><div class="keys"><span class="pink">● Aortic valve</span><span class="blue">● Pulmonary valve</span></div></article>
+<article class="graph-card"><header><div><small>05 / PRESSURE–VOLUME RELATION</small><h3>Left ventricular PV trajectory</h3></div><b>mmHg / mL</b></header><svg id="chartPV" viewBox="0 0 700 290" role="img" aria-label="Calculated left ventricular pressure volume loop"></svg><div class="keys"><span class="pink">● Last simulated cardiac cycle</span></div></article>
+<article class="graph-card"><header><div><small>06 / FLOW BALANCE</small><h3>Compartment flow diagnostics</h3></div><b>mL/s</b></header><div class="flow-readouts" id="flowReadouts"></div><p class="muted small">Mean flow rates over the final analyzed interval. Numerical results depend on the model assumptions and initial conditions.</p></article>
+</div>
+<div class="method-note">All plots above are generated from this website's numerical model, not from image files or digitized report screenshots. They are educational engineering simulations and are not clinically validated predictions.</div>
+</div>
 </section>
-<section class="section reference-section" id="evidence">
-  <aside>05 / SOURCE REFERENCES</aside>
 
-  <div>
-    <h2>Original models.<br><em>Documented results.</em></h2>
-
-    <p>The source report's Simulink subsystems and simulation outputs are retained for technical reference. The primary interactive network and charts appear above, while original documentation is organized by evidence type below.</p>
-
-    <div class="reference-categories">
-
-      <details class="reference-group">
-        <summary>
-          <span class="reference-number">01</span>
-          <span class="reference-heading">
-            <strong>Simulink Circuit &amp; Subsystem References</strong>
-            <small>Original diagrams · Report pages 36–44</small>
-          </span>
-          <span class="reference-expand">Explore +</span>
-        </summary>
-        <div class="reference-gallery">
-          <figure class="reference-figure">
-  <a href="assets/report/page-36.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-36.webp"
-         loading="lazy"
-         alt="Original report page 36">
-  </a>
-  <figcaption>PAGE 36 · Simulink model / subsystem</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-37.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-37.webp"
-         loading="lazy"
-         alt="Original report page 37">
-  </a>
-  <figcaption>PAGE 37 · Simulink model / subsystem</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-38.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-38.webp"
-         loading="lazy"
-         alt="Original report page 38">
-  </a>
-  <figcaption>PAGE 38 · Simulink model / subsystem</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-39.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-39.webp"
-         loading="lazy"
-         alt="Original report page 39">
-  </a>
-  <figcaption>PAGE 39 · Simulink model / subsystem</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-40.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-40.webp"
-         loading="lazy"
-         alt="Original report page 40">
-  </a>
-  <figcaption>PAGE 40 · Simulink model / subsystem</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-41.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-41.webp"
-         loading="lazy"
-         alt="Original report page 41">
-  </a>
-  <figcaption>PAGE 41 · Simulink model / subsystem</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-42.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-42.webp"
-         loading="lazy"
-         alt="Original report page 42">
-  </a>
-  <figcaption>PAGE 42 · Simulink model / subsystem</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-43.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-43.webp"
-         loading="lazy"
-         alt="Original report page 43">
-  </a>
-  <figcaption>PAGE 43 · Simulink model / subsystem</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-44.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-44.webp"
-         loading="lazy"
-         alt="Original report page 44">
-  </a>
-  <figcaption>PAGE 44 · Simulink model / subsystem</figcaption>
-</figure>
-        </div>
-      </details>
-
-      <details class="reference-group">
-        <summary>
-          <span class="reference-number">02</span>
-          <span class="reference-heading">
-            <strong>Original Simulation Results</strong>
-            <small>Pressure, volume and flow plots · Report pages 45–48</small>
-          </span>
-          <span class="reference-expand">Explore +</span>
-        </summary>
-        <div class="reference-gallery">
-          <figure class="reference-figure">
-  <a href="assets/report/page-45.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-45.webp"
-         loading="lazy"
-         alt="Original report page 45">
-  </a>
-  <figcaption>PAGE 45 · Reported simulation output</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-46.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-46.webp"
-         loading="lazy"
-         alt="Original report page 46">
-  </a>
-  <figcaption>PAGE 46 · Reported simulation output</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-47.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-47.webp"
-         loading="lazy"
-         alt="Original report page 47">
-  </a>
-  <figcaption>PAGE 47 · Reported simulation output</figcaption>
-</figure>
-<figure class="reference-figure">
-  <a href="assets/report/page-48.webp"
-     target="_blank" rel="noopener noreferrer">
-    <img src="assets/report/page-48.webp"
-         loading="lazy"
-         alt="Original report page 48">
-  </a>
-  <figcaption>PAGE 48 · Reported simulation output</figcaption>
-</figure>
-        </div>
-      </details>
-
-    </div>
-
-    <div class="note">
-      <b>Source and reproducibility.</b>
-      The original 52-page report, <em>Modeling and simulation of Cardiovascular System Using Simulink</em>, was prepared for BME 3114 at Khulna University of Engineering &amp; Technology in April 2024. These documentary figures are distinct from this website's new interactive visualization. Use of original report figures remains subject to appropriate permission.
-    </div>
-  </div>
+<section class="section method-section" id="method">
+<div class="section-index">04 / ENGINEERING METHOD</div>
+<div class="section-main">
+<h2>Transparent model.<br><em>Explicit assumptions.</em></h2>
+<div class="method-grid">
+<div><small>01 / STATE VARIABLES</small><h3>Eight compartment volumes</h3><p>Four heart chambers, two pulmonary vascular compartments and two systemic vascular compartments.</p></div>
+<div><small>02 / CONSERVATION</small><h3>Volume continuity</h3><p>Each transfer decreases upstream volume and increases downstream volume by the same amount.</p></div>
+<div><small>03 / PRESSURE</small><h3>Elastance and compliance</h3><p>Chamber pressures vary with time-dependent elastance; simplified vascular pressures use fixed compliance.</p></div>
+<div><small>04 / VALVES</small><h3>One-way flow</h3><p>Valves open for positive upstream-to-downstream pressure gradients and remain closed otherwise.</p></div>
+</div>
+<div class="method-note"><strong>Scientific boundary:</strong> The mathematical concepts are informed by the cardiovascular modeling report, including compartment dynamics and valve equations. However, the original MATLAB/Simulink model, complete parameter tables and solver configurations were not available. This is an independently implemented and simplified educational model; numerical equivalence to the report, physiological calibration and clinical validity have not been established.</div>
+<a href="https://github.com/Sejuti-Dhali/CardioSim" target="_blank" rel="noopener" class="outline">View Implementation & Documentation ↗</a>
+</div>
 </section>
-<section class="section end"><aside>05 / REPRODUCIBILITY</aside><div><h2>What is documented.<br><em>What remains open.</em></h2><p>The report provides equations, visual subsystem definitions and output plots. The native Simulink project, solver configuration, complete parameter tables and exported datasets would be necessary to reproduce the reported simulation independently. A separate step-by-step reproducibility roadmap is available in the repository.</p><a class="btn" href="https://github.com/Sejuti-Dhali/CardioSim" target="_blank" rel="noopener">Explore repository ↗</a></div></section></main><footer><b>CARDIOSIM</b><span>Educational computational physiology · Not a medical device</span><a href="#home">Back to top ↑</a></footer></body></html>
+</main>
+<footer><b>CARDIOSIM</b><span>Interactive computational physiology · Not a medical device</span><a href="#top">Back to top ↑</a></footer>
+</body>
+</html>

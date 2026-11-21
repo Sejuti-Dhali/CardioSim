@@ -1,53 +1,62 @@
-# CardioSim — Cardiovascular Modeling Laboratory
+# CardioSim — Interactive Cardiovascular Hemodynamics Laboratory
 
-A report-grounded educational web portfolio demonstrating cardiovascular subsystem architecture and an independent, illustrative cardiac-output/pressure–volume visualization.
+CardioSim is a browser-based, independent educational implementation of a simplified closed-loop cardiovascular compartment model.
 
-**Live website:** https://sejuti-dhali.github.io/CardioSim/
+**Website:** https://sejuti-dhali.github.io/CardioSim/
 
-## Evidence source
+## Capabilities
 
-*Modeling and simulation of Cardiovascular System Using Simulink*, BME 3114, Biomedical Modeling and Simulation Laboratory, Department of Biomedical Engineering, Khulna University of Engineering & Technology, April 2024, 52 pages. Source-reported Simulink block diagrams and output figures are reproduced as labeled full-page extracts from pages 36–48, subject to the original authors' authorization.
+- Interactive SVG model of four cardiac chambers and four vascular compartments.
+- Eight physiological flow pathways, including four one-way cardiac valves.
+- Draggable chamber and vessel blocks.
+- Editable flow-connection curvature.
+- Time-varying ventricular elastance and atrial activation.
+- Pressure-dependent transfer flows with compartment volume conservation.
+- Numerical trajectories for ventricular pressure, vascular pressure, ventricular volume and valve flow.
+- Numerically computed left ventricular pressure–volume trajectory.
+- Scenario inputs for heart rate, contractility, vascular resistance and circulating blood volume.
+- Animated rhythm monitor and contextual component inspector.
+- Separate results dashboard with calculated mean cardiac output and other metrics.
 
-## Interactive educational model
+## Governing relationships
 
-- Heart rate, stroke volume, end-diastolic volume and an illustrative peak LV pressure can be changed using accessible sliders.
-- Cardiac output is calculated as HR × SV in L/min.
-- Cycle duration is 60/HR in seconds.
-- End-systolic volume is estimated as EDV − SV.
-- The pressure–volume loop is **schematic**, not the numerical integration of the original coupled Simulink system.
+Compartment blood-volume balance:
 
-## Important limitations
+dV_i/dt = sum(Q_in) - sum(Q_out)
 
-The native `.slx` project, complete parameter tables, solver configurations and numeric time series were not supplied. This repository **does not** claim independent reproduction of the full source model or clinical applicability. Illustrations and what-if inputs are not patient observations.
+One-way valve flows:
 
-## Project structure
+Q = max(0, (P_upstream - P_downstream) / R)
 
-- `index.html`: public portfolio
-- `assets/style.css`: responsive design
-- `assets/app.js`: standalone demonstration model
-- `assets/report/`: page-image extracts from the source PDF
-- `docs/engineering-notes.md`: provenance and reproducibility roadmap
-- `tests/verify.js`: static source and arithmetic checks
-- `.github/workflows/pages.yml`: GitHub Pages deployment
+Simplified vascular pressure:
 
-## Local run and validation
+P = max(0, (V - V_unstressed) / C)
 
-Open `index.html` in a browser. With Node.js installed, run `node tests/verify.js`.
+Simplified time-varying heart-chamber pressure:
 
-## Credit and reuse
+P = max(0, E(t) * (V - V_unstressed))
 
-Original Simulink figures are attributed to the cited KUET report. Their reuse requires appropriate authorization; this repository presents a separate educational web implementation.
+The simulation uses a conservative explicit time-stepping scheme.
 
-## Interactive network and results
+## Model scope
 
-This version adds a separate, browser-native interactive circulation diagram and results dashboard.
+The mathematical concepts were informed by the supplied coursework report, *Modeling and simulation of Cardiovascular System Using Simulink*, BME 3114, KUET, April 2024.
 
-- Cardiac chamber and circulation nodes can be dragged.
-- Flow connections automatically follow node positions.
-- Connection control handles can be dragged to change their curvature.
-- Selecting a connection shows the corresponding physiological interpretation.
-- Heart rate changes the visual flow animation speed.
-- The results dashboard redraws illustrative pressure, volume and normalized flow curves in response to the existing controls.
-- Original Simulink subsystem diagrams and reported plots remain accessible in separate expandable reference sections.
+This implementation is not a conversion or exact numerical reproduction of the original report's MATLAB/Simulink model. A native `.slx` file, full parameter tables and solver configuration were unavailable.
 
-These visualizations do not execute the original Simulink `.slx` model, which was not provided. They are educational, illustrative representations rather than experimental or clinically validated results.
+The app does not display report-page screenshots. All network components, plots and calculated metrics are generated within the web application.
+
+## Validation
+
+`node --check assets/app.js`
+
+`node tests/verify.js`
+
+These tests verify code structure and representative mathematical invariants; they do not establish clinical validation, numerical convergence or equivalence with the original Simulink outputs.
+
+## Safety and limitations
+
+- The model is simplified and not physiologically calibrated.
+- The parameter presets are demonstrative examples.
+- The simulation is not suitable for patient-specific interpretation.
+- It is not a medical device or clinical decision-support tool.
