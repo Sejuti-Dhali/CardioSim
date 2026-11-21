@@ -6,7 +6,7 @@ A report-grounded educational web portfolio demonstrating cardiovascular subsyst
 
 ## Evidence source
 
-*Modeling and simulation of Cardiovascular System Using Simulink*, BME 3114, Biomedical Modeling and Simulation Laboratory, Department of Biomedical Engineering, Khulna University of Engineering & Technology, April 2024, 52 pages. The cover credits a six-member Group 1. Source-reported Simulink block diagrams and output figures are reproduced as labeled full-page extracts from pages 36–48, subject to the original authors' authorization.
+*Modeling and simulation of Cardiovascular System Using Simulink*, BME 3114, Biomedical Modeling and Simulation Laboratory, Department of Biomedical Engineering, Khulna University of Engineering & Technology, April 2024, 52 pages. Source-reported Simulink block diagrams and output figures are reproduced as labeled full-page extracts from pages 36–48, subject to the original authors' authorization.
 
 ## Interactive educational model
 
@@ -36,4 +36,4 @@ Open `index.html` in a browser. With Node.js installed, run `node tests/verify.j
 
 ## Credit and reuse
 
-The source report lists multiple contributors. Repository ownership does not imply sole authorship of its Simulink implementation. Check contributor consent and permissions before redistributing any source-derived figures.
+Original Simulink figures are attributed to the cited KUET report. Their reuse requires appropriate authorization; this repository presents a separate educational web implementation.

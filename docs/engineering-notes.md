@@ -17,4 +17,4 @@ The interactive website is purposely simpler: HR×SV, 60/HR, EDV−SV and a sche
 6. Disclose numerical uncertainty and calibration limitations.
 
 ## Authorship
-The source report identifies a Group 1 of six people. Do not claim sole design or authorship of this original project without explicit evidence of contribution.
+The original MATLAB/Simulink work is documented in the cited April 2024 KUET report. This repository provides a separate educational web visualization; it does not claim independent reproduction of the source model.
