@@ -37,3 +37,17 @@ Open `index.html` in a browser. With Node.js installed, run `node tests/verify.j
 ## Credit and reuse
 
 Original Simulink figures are attributed to the cited KUET report. Their reuse requires appropriate authorization; this repository presents a separate educational web implementation.
+
+## Interactive network and results
+
+This version adds a separate, browser-native interactive circulation diagram and results dashboard.
+
+- Cardiac chamber and circulation nodes can be dragged.
+- Flow connections automatically follow node positions.
+- Connection control handles can be dragged to change their curvature.
+- Selecting a connection shows the corresponding physiological interpretation.
+- Heart rate changes the visual flow animation speed.
+- The results dashboard redraws illustrative pressure, volume and normalized flow curves in response to the existing controls.
+- Original Simulink subsystem diagrams and reported plots remain accessible in separate expandable reference sections.
+
+These visualizations do not execute the original Simulink `.slx` model, which was not provided. They are educational, illustrative representations rather than experimental or clinically validated results.
